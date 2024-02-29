@@ -3,13 +3,14 @@ import { createStore } from "vuex";
 const store = createStore({
   state() {
     return {
-      count: 0,
+      tasks: [
+        { id: 1, text: "YT Intro remix", active: false },
+        { id: 2, text: "Magic stuff", active: true },
+      ],
     };
   },
   mutations: {
-    increment(state) {
-      state.count++;
-    },
+    changeActive: (state,id)=>
   },
 });
 

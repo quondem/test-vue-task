@@ -1,13 +1,26 @@
 <template>
-	<header>
-		<ul>
-			<li><RouterLink to="/">Главная</RouterLink></li>
-			<li><RouterLink to="/tasks">Задачи</RouterLink></li>
-		</ul>
-	</header>
-	<RouterView />
+  <header>
+    <NavBar />
+  </header>
+  <div class="flex px-2 text-slate-700 antialiased">
+    <RouterView />
+  </div>
 </template>
 
 <script setup>
-	import { RouterView } from "vue-router";
+import NavBar from "./components/NavBar.vue";
+import { RouterView } from "vue-router";
 </script>
+
+<style>
+.active {
+  @apply rounded-md bg-gray-900 px-3 py-2 font-medium text-white;
+}
+body,
+#app {
+  @apply min-h-screen bg-slate-200;
+}
+#app {
+  @apply flex flex-col;
+}
+</style>
