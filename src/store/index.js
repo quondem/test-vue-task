@@ -3,17 +3,22 @@ import { createStore } from "vuex";
 const store = createStore({
   state() {
     return {
-      tasks: [
-        { id: 1, text: "YT Intro remix", active: false },
-        { id: 2, text: "Magic stuff", active: false },
-        { id: 3, text: "Magic2 stuff", active: false },
-      ],
+      tasks: [],
       activeInput: 0,
     };
   },
   getters: {
     getTasks(state) {
       return state.tasks;
+    },
+    getSortTasks(state){
+      return [...state.tasks]?.sort((a, b) => {
+        if (a.active && !b.active) {
+          return 1;
+        }else{
+          return -1;
+        }
+      })
     },
     getIndex(state) {
       return (id) => state.tasks.findIndex((item) => item.id == id);
@@ -28,13 +33,13 @@ const store = createStore({
     },
   },
   mutations: {
+    loadTasks: (state,tasks) => tasks?.forEach(item=>state.tasks.push(item)),
     addTask: (state, item) => state.tasks.push(item),
     deleteTask: (state, index) => state.tasks.splice(index, 1),
     changeActive: (state, index) =>
       (state.tasks[index].active = !state.tasks[index].active),
     changeActiveInput(state, id) {
       state.activeInput = id;
-      console.log(state.activeInput);
     },
   },
   actions: {
@@ -45,17 +50,25 @@ const store = createStore({
       commit("changeText", getters["getIndex"](id), text);
     },
     addTask({ commit, getters }, text) {
-      text
-        ? commit("addTask", {
-            id: getters["getLastId"] + 1,
-            text,
-            active: false,
-          })
-        : null;
+      if(text){
+        commit("addTask", {
+          id: getters["getLastId"] + 1,
+          text,
+          active: false,
+        })
+      }
     },
     deleteTask({ commit, getters }, id) {
       commit("deleteTask", getters["getIndex"](id));
     },
+    loadTasks({commit}){
+      let tasks = JSON.parse(localStorage.getItem('tasks'))
+      commit('loadTasks',tasks)
+    },
+    setTasks({state}){
+      localStorage.clear()
+      localStorage.setItem('tasks',JSON.stringify(state.tasks))
+    }
   },
 });
 

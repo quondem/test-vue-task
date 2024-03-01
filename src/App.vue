@@ -2,27 +2,31 @@
   <div
     @click="
       (e) => {
-        console.log(e.target.closest('.inputText'));
-        !e.target.closest('.inputText') ? changeActiveInput() : null;
+        !e.target.closest('#inputText') ? changeActiveInput() : null;
       }
     "
   >
     <header>
       <NavBar />
     </header>
-    <div class="flex flex-col px-2 text-slate-700 antialiased">
+    <div class="flex items-center flex-col px-2 text-slate-700 antialiased">
       <RouterView />
     </div>
   </div>
 </template>
 
 <script setup>
-import NavBar from "./components/NavBar.vue";
+import { onBeforeMount } from "vue";
+import NavBar from "./components/header/NavBar.vue";
 import { RouterView } from "vue-router";
 import { useStore } from "vuex";
 
 let store = useStore();
 let changeActiveInput = () => store.commit("changeActiveInput", -1);
+
+onBeforeMount(()=>{
+  store.dispatch('loadTasks')
+})
 </script>
 
 <style>
