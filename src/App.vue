@@ -1,15 +1,28 @@
 <template>
-  <header>
-    <NavBar />
-  </header>
-  <div class="flex px-2 text-slate-700 antialiased">
-    <RouterView />
+  <div
+    @click="
+      (e) => {
+        console.log(e.target.closest('.inputText'));
+        !e.target.closest('.inputText') ? changeActiveInput() : null;
+      }
+    "
+  >
+    <header>
+      <NavBar />
+    </header>
+    <div class="flex flex-col px-2 text-slate-700 antialiased">
+      <RouterView />
+    </div>
   </div>
 </template>
 
 <script setup>
 import NavBar from "./components/NavBar.vue";
 import { RouterView } from "vue-router";
+import { useStore } from "vuex";
+
+let store = useStore();
+let changeActiveInput = () => store.commit("changeActiveInput", -1);
 </script>
 
 <style>
